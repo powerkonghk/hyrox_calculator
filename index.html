@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HYROX Race Time Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/hyrox-mark.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="logo-link" href="https://hyrox.com/" target="_blank" rel="noopener noreferrer" title="HYROX">
+        <img class="logo-full" src="assets/hyrox-logo.svg" width="168" height="31" alt="HYROX" />
+      </a>
+      <div class="topbar-right">
+        <span class="topbar-event" data-i18n="topbarTitle">Race Time Calculator</span>
+        <div class="lang-switch" role="group" data-i18n-aria="langAria" aria-label="Language">
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" class="lang-btn" data-lang="yue" aria-pressed="false">港</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <header class="header">
+      <p class="eyebrow" data-i18n="eyebrow">General calculator</p>
+      <h1 data-i18n="heroTitle">Plan your finish</h1>
+      <p class="tagline" data-i18n="tagline">
+        Personal pace planner &amp; data-backed target splits for any HYROX race.
+      </p>
+    </header>
+
+    <nav class="tabs" role="tablist" data-i18n-aria="tabsAria" aria-label="Calculator views">
+      <button type="button" class="tab active" role="tab" id="tab-targets" data-tab="targets" aria-selected="true" aria-controls="panel-targets" data-i18n="tabTargets">
+        Target Times
+      </button>
+      <button type="button" class="tab" role="tab" id="tab-calc" data-tab="calc" aria-selected="false" aria-controls="panel-calc" data-i18n="tabCalc">
+        My Calculator
+      </button>
+    </nav>
+
+    <!-- ========== TAB: Target Times (default) ========== -->
+    <main class="layout tab-panel" id="panel-targets" role="tabpanel" aria-labelledby="tab-targets">
+      <section class="card">
+        <div class="card-head">
+          <h2 data-i18n="chooseGoal">Choose a finish goal</h2>
+          <p class="hint" data-i18n-html="chooseGoalHint"></p>
+        </div>
+        <div class="goal-grid" id="goal-grid" role="group" data-i18n-aria="goalAria" aria-label="Target finish time"></div>
+      </section>
+
+      <section class="card target-hero" id="target-summary">
+        <div class="target-hero-top">
+          <div>
+            <p class="target-label" id="tgt-label">Sub 70</p>
+            <div class="finish-time mono" id="tgt-finish">1:09:20</div>
+            <p class="finish-sub" id="tgt-level">Advanced · top ~10%</p>
+          </div>
+          <button type="button" class="btn primary" id="apply-targets" data-i18n="applyToCalc" data-i18n-title="applyToCalcTitle" title="Load these splits into My Calculator">
+            Apply to calculator
+          </button>
+        </div>
+        <p class="apply-feedback hidden" id="apply-feedback" role="status"></p>
+
+        <div class="dist-bars" id="tgt-dist">
+          <div class="dist-item">
+            <div class="dist-head">
+              <span class="bd-label"><span class="swatch run"></span> <span data-i18n="running">Running</span></span>
+              <span class="mono" id="tgt-run-total">35:50</span>
+            </div>
+            <div class="bd-bar"><div class="bd-fill run" id="tgt-bar-run"></div></div>
+            <div class="dist-meta">
+              <span id="tgt-run-pct">52%</span>
+              <span id="tgt-avg-meta"></span>
+            </div>
+          </div>
+          <div class="dist-item">
+            <div class="dist-head">
+              <span class="bd-label"><span class="swatch station"></span> <span data-i18n="stations">Stations</span></span>
+              <span class="mono" id="tgt-st-total">28:00</span>
+            </div>
+            <div class="bd-bar"><div class="bd-fill station" id="tgt-bar-st"></div></div>
+            <div class="dist-meta">
+              <span id="tgt-st-pct">40%</span>
+              <span data-i18n="eightStations">8 workout stations</span>
+            </div>
+          </div>
+          <div class="dist-item">
+            <div class="dist-head">
+              <span class="bd-label"><span class="swatch rox"></span> Roxzone</span>
+              <span class="mono" id="tgt-rox-total">5:30</span>
+            </div>
+            <div class="bd-bar"><div class="bd-fill rox" id="tgt-bar-rox"></div></div>
+            <div class="dist-meta">
+              <span id="tgt-rox-pct">8%</span>
+              <span id="tgt-rox-meta"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="performance-section">
+        <div class="card-head">
+          <h2><span data-i18n="perfIndex">Performance index</span> <span class="badge" data-i18n="topPct">top %</span></h2>
+          <p class="hint" data-i18n-html="perfHint"></p>
+        </div>
+
+        <div class="callout-warn" role="note" data-i18n-html="openVsPro"></div>
+
+        <div class="perf-table-wrap">
+          <table class="split-table perf-table">
+            <thead>
+              <tr>
+                <th data-i18n="thDivision">Division</th>
+                <th data-i18n="thRank">Rank in field</th>
+                <th data-i18n="thLoad">Load / format</th>
+                <th data-i18n="thContext">Context</th>
+              </tr>
+            </thead>
+            <tbody id="tgt-perf-body"></tbody>
+          </table>
+        </div>
+        <p class="guide" id="tgt-perf-footnote" data-i18n-html="perfFootnote"></p>
+      </section>
+
+      <section class="card">
+        <div class="card-head row-between">
+          <div>
+            <h2 data-i18n="targetStations">Target station times</h2>
+            <p class="hint" data-i18n="targetStationsHint">Hit these under race fatigue (after each 1 km run).</p>
+          </div>
+        </div>
+        <table class="split-table target-stations-table">
+          <thead>
+            <tr>
+              <th data-i18n="thNum">#</th>
+              <th data-i18n="thStation">Station</th>
+              <th data-i18n="thTarget">Target</th>
+              <th data-i18n="thPctStations">% of stations</th>
+            </tr>
+          </thead>
+          <tbody id="tgt-stations-body"></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2 data-i18n="targetRuns">Target run splits</h2>
+          <p class="hint" data-i18n="targetRunsHint"></p>
+        </div>
+        <div class="pace-callout">
+          <div>
+            <span class="stat-label" data-i18n="targetAvgPace">Target average pace</span>
+            <div class="pace-big mono" id="tgt-pace-big">4:29<span class="unit">/km</span></div>
+          </div>
+          <div>
+            <span class="stat-label" data-i18n="totalRunning8">Total running (8 km)</span>
+            <div class="pace-big mono" id="tgt-run-big">35:50</div>
+          </div>
+        </div>
+        <table class="split-table">
+          <thead>
+            <tr>
+              <th data-i18n="thRun">Run</th>
+              <th data-i18n="thTarget">Target</th>
+              <th data-i18n="thNotes">Notes</th>
+            </tr>
+          </thead>
+          <tbody id="tgt-runs-body"></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2 data-i18n="howBuilt">How this was built</h2>
+        </div>
+        <div class="sources" id="tgt-sources"></div>
+        <p class="guide" id="tgt-notes"></p>
+      </section>
+    </main>
+
+    <!-- ========== TAB: My Calculator ========== -->
+    <main class="layout tab-panel hidden" id="panel-calc" role="tabpanel" aria-labelledby="tab-calc" hidden>
+      <section class="card" id="pace-section">
+        <div class="card-head">
+          <h2 data-i18n="runningPace">Running pace</h2>
+          <p class="hint" data-i18n="runningPaceHint">Your target average pace for each 1 km run segment (×8 = 8 km total).</p>
+        </div>
+        <div class="pace-row">
+          <label class="field">
+            <span class="label" data-i18n="paceLabel">Pace (min:sec / km)</span>
+            <div class="time-input-group">
+              <input type="number" id="pace-min" min="0" max="30" value="5" inputmode="numeric" data-i18n-aria="paceMinAria" aria-label="Pace minutes" />
+              <span class="sep">:</span>
+              <input type="number" id="pace-sec" min="0" max="59" value="0" inputmode="numeric" data-i18n-aria="paceSecAria" aria-label="Pace seconds" />
+              <span class="unit">/km</span>
+            </div>
+          </label>
+          <div class="stat-box">
+            <span class="stat-label" data-i18n="run1km">1 km run time</span>
+            <span class="stat-value mono" id="run-segment-display">5:00</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label" data-i18n="runs8total">8 × runs total</span>
+            <span class="stat-value mono" id="run-total-display">40:00</span>
+          </div>
+        </div>
+        <p class="note" id="station-sync-note" data-i18n="stationSyncNote">
+          Station defaults update to match one run segment when pace changes. Fine-tune any station below.
+        </p>
+      </section>
+
+      <section class="card" id="stations-section">
+        <div class="card-head row-between">
+          <div>
+            <h2 data-i18n="workoutStations">Workout stations</h2>
+            <p class="hint" data-i18n="stationsHint">Defaults = one run segment. Edit any station to fine-tune.</p>
+          </div>
+          <button type="button" class="btn ghost" id="reset-stations" data-i18n="resetToPace" data-i18n-title="resetToPaceTitle" title="Reset all stations to current run segment time">
+            Reset to pace
+          </button>
+        </div>
+        <div class="stations" id="stations-list"></div>
+        <div class="subtotal">
+          <span data-i18n="stationsSubtotal">Stations subtotal</span>
+          <span class="mono" id="stations-total">40:00</span>
+        </div>
+      </section>
+
+      <section class="card" id="roxzone-section">
+        <div class="card-head">
+          <h2><span data-i18n="roxzoneTitle">Roxzone</span> <span class="badge" data-i18n="transitions">transitions</span></h2>
+          <p class="hint" data-i18n-html="roxzoneHint">
+            The Roxzone is the corridor between the run track and each station.
+          </p>
+        </div>
+
+        <div class="rox-mode" role="tablist" data-i18n-aria="roxModeAria" aria-label="Roxzone input mode">
+          <button type="button" class="rox-mode-btn active" data-mode="per" role="tab" aria-selected="true" data-i18n="perPassAvg">
+            Per pass average
+          </button>
+          <button type="button" class="rox-mode-btn" data-mode="total" role="tab" aria-selected="false" data-i18n="totalRoxzone">
+            Total Roxzone
+          </button>
+        </div>
+
+        <div class="rox-panel" id="rox-per-panel">
+          <label class="field">
+            <span class="label" data-i18n="avgPerPass">Average time per Roxzone pass</span>
+            <div class="time-input-group">
+              <input type="number" id="rox-per-min" min="0" max="5" value="0" inputmode="numeric" data-i18n-aria="roxPerMinAria" aria-label="Roxzone minutes per pass" />
+              <span class="sep">:</span>
+              <input type="number" id="rox-per-sec" min="0" max="59" value="30" inputmode="numeric" data-i18n-aria="roxPerSecAria" aria-label="Roxzone seconds per pass" />
+              <span class="unit">× 16</span>
+            </div>
+          </label>
+          <p class="guide" data-i18n-html="roxGuidePer"></p>
+        </div>
+
+        <div class="rox-panel hidden" id="rox-total-panel">
+          <label class="field">
+            <span class="label" data-i18n="totalRoxzoneLabel">Total Roxzone time (all transitions)</span>
+            <div class="time-input-group">
+              <input type="number" id="rox-total-min" min="0" max="60" value="8" inputmode="numeric" data-i18n-aria="roxTotalMinAria" aria-label="Roxzone total minutes" />
+              <span class="sep">:</span>
+              <input type="number" id="rox-total-sec" min="0" max="59" value="0" inputmode="numeric" data-i18n-aria="roxTotalSecAria" aria-label="Roxzone total seconds" />
+            </div>
+          </label>
+          <p class="guide" data-i18n="roxGuideTotal">
+            Use this if you already know your expected total transition time from a past race or plan.
+          </p>
+        </div>
+
+        <div class="subtotal">
+          <span data-i18n="roxzoneTotal">Roxzone total</span>
+          <span class="mono" id="roxzone-total">8:00</span>
+        </div>
+      </section>
+
+      <section class="card result-card" id="result-section">
+        <div class="card-head">
+          <h2 data-i18n="predictedFinish">Predicted finish</h2>
+        </div>
+        <div class="finish-time mono" id="finish-time">1:28:00</div>
+        <p class="finish-sub" id="finish-sub">1 hour 28 minutes</p>
+
+        <div class="breakdown" id="breakdown">
+          <div class="bd-row">
+            <span class="bd-label"><span class="swatch run"></span> <span data-i18n="bdRunning">Running (8 × 1 km)</span></span>
+            <span class="mono" id="bd-run">40:00</span>
+            <span class="pct" id="bd-run-pct">45%</span>
+          </div>
+          <div class="bd-bar"><div class="bd-fill run" id="bar-run" style="width:45%"></div></div>
+
+          <div class="bd-row">
+            <span class="bd-label"><span class="swatch station"></span> <span data-i18n="bdStations">Stations (8)</span></span>
+            <span class="mono" id="bd-stations">40:00</span>
+            <span class="pct" id="bd-stations-pct">45%</span>
+          </div>
+          <div class="bd-bar"><div class="bd-fill station" id="bar-stations" style="width:45%"></div></div>
+
+          <div class="bd-row">
+            <span class="bd-label"><span class="swatch rox"></span> <span data-i18n="bdRoxzone">Roxzone (16 passes)</span></span>
+            <span class="mono" id="bd-rox">8:00</span>
+            <span class="pct" id="bd-rox-pct">9%</span>
+          </div>
+          <div class="bd-bar"><div class="bd-fill rox" id="bar-rox" style="width:9%"></div></div>
+        </div>
+
+        <div class="split-table-wrap">
+          <h3 data-i18n="raceFlow">Race flow split</h3>
+          <table class="split-table" id="split-table">
+            <thead>
+              <tr>
+                <th data-i18n="thNum">#</th>
+                <th data-i18n="thSegment">Segment</th>
+                <th data-i18n="thTime">Time</th>
+                <th data-i18n="thCumulative">Cumulative</th>
+              </tr>
+            </thead>
+            <tbody id="split-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-brand">
+        <img class="logo-mark" src="assets/hyrox-mark.svg" width="56" height="38" alt="" aria-hidden="true" />
+        <div>
+          <p class="footer-title" data-i18n="footerTitle">HYROX Calculator</p>
+          <p data-i18n-html="footerFormula"></p>
+        </div>
+      </div>
+      <p class="disclaimer" data-i18n-html="disclaimer"></p>
+    </footer>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
