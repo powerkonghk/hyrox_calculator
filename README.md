@@ -32,9 +32,7 @@ General HYROX calculator UI, inspired by [hyrox.com](https://hyrox.com/) design 
 | Highlight / buttons | Yellow `#FFE600` |
 | Display type | Barlow Condensed |
 | Body type | Inter |
-| Logo | `assets/hyrox-logo.svg` + `hyrox-mark.svg` (unofficial recreation) |
-
-**This is an unofficial fan tool** — not affiliated with HYROX World GmbH. Logo files are UI recreations, not official brand assets.
+| Logo | `assets/hyrox-logo.svg` + `hyrox-mark.svg` |
 
 ## Formula (My Calculator)
 

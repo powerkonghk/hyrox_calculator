@@ -102,8 +102,7 @@ const I18N = {
     footerTitle: "HYROX Calculator",
     footerFormula:
       "Formula: <code>8 × run pace + Σ stations + Roxzone</code>. Target splits from race-result research. Adjust for venue floor, Open vs Pro loads, and your strengths.",
-    disclaimer:
-      'Unofficial fan tool — not affiliated with or endorsed by HYROX World GmbH. Design language (black background, white type, yellow highlights) is inspired by <a href="https://hyrox.com/" target="_blank" rel="noopener noreferrer">hyrox.com</a>. Logo mark is a recreation for UI, not an official asset.',
+    contactLabel: "Contact",
 
     langEn: "EN",
     langYue: "港",
@@ -353,8 +352,7 @@ const I18N = {
     footerTitle: "HYROX Calculator",
     footerFormula:
       "公式：<code>8 × run 配速 + Σ stations + Roxzone</code>。目標分段來自賽果研究。請按場地、Open vs Pro 負重同自己強弱調整。",
-    disclaimer:
-      '非官方粉絲工具 — 與 HYROX World GmbH 無關，亦未獲其認可。介面風格（黑底、白字、黃色重點）參考 <a href="https://hyrox.com/" target="_blank" rel="noopener noreferrer">hyrox.com</a>。Logo 為介面重繪，並非官方資產。',
+    contactLabel: "聯絡",
 
     langEn: "EN",
     langYue: "港",

@@ -1118,6 +1118,39 @@ html[lang="zh-HK"] .btn {
   color: var(--hyrox-white);
 }
 
+.footer-contact {
+  margin: 0.55rem 0 0 !important;
+  font-size: 0.85rem !important;
+  color: var(--text-muted) !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.4rem;
+}
+
+.footer-contact .ig-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--hyrox-yellow);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-contact .ig-link:hover {
+  color: var(--hyrox-white);
+  text-decoration: none;
+}
+
+.footer-contact .ig-link:hover span {
+  text-decoration: underline;
+}
+
+.footer-contact .ig-icon {
+  flex-shrink: 0;
+  display: block;
+}
+
 .footer p {
   margin: 0;
   font-size: 0.78rem;
@@ -1132,12 +1165,6 @@ html[lang="zh-HK"] .btn {
   background: var(--hyrox-elevated);
   padding: 0.1rem 0.35rem;
   border-radius: 2px;
-}
-
-.disclaimer {
-  margin-top: 0.75rem !important;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
 }
 
 @media (max-width: 560px) {
